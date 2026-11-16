@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>re-face</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+         font-family: system-ui, sans-serif; background: #f3f1ec; color: #1d2a26; text-align: center; }
+  main { padding: 2rem; max-width: 26rem; }
+  h1 { font-weight: 400; letter-spacing: .08em; margin: 0 0 .6rem; }
+  p { color: #5b6b65; line-height: 1.5; }
+  a { color: #12735f; font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>RE-FACE</h1>
+  <p id="msg">Abrindo a plataforma…</p>
+</main>
+<script>
+  // Esta pagina nunca muda. Ela le o endereco atual em destino.json (sem
+  // cache) e redireciona. Quem atualiza o destino.json e o testar_no_celular.sh.
+  fetch("destino.json?t=" + Date.now(), { cache: "no-store" })
+    .then((r) => r.json())
+    .then((d) => {
+      if (!d.url) throw new Error();
+      location.replace(d.url);
+      document.getElementById("msg").innerHTML =
+        'Se não abrir sozinho, <a href="' + d.url + '">toque aqui</a>.';
+    })
+    .catch(() => {
+      document.getElementById("msg").textContent =
+        "A plataforma não está no ar neste momento.";
+    });
+</script>
+</body>
+</html>
